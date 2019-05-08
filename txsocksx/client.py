@@ -89,10 +89,8 @@ class SOCKS5Sender(object):
             struct.pack('!BB', c.VER_SOCKS5, len(methods)) + b''.join(methods))
 
     def sendLogin(self, username, password):
-        self.transport.write(
-            '\x01'
-            + chr(len(username)) + username
-            + chr(len(password)) + password)
+        data = '\x01' + chr(len(username)) + username + chr(len(password)) + password
+        self.transport.write(data.encode())
 
     def sendRequest(self, command, host, port):
         data = struct.pack('!BBB', c.VER_SOCKS5, command, c.RSV)
